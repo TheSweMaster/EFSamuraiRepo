@@ -11,8 +11,9 @@ namespace EFSamurai.Domain
         public string Sword { get; set; }
         public HairStyles HairStyle { get; set; }
         public SecretIdentity SecretIdentity { get; set; }
-
         public virtual ICollection<Quote> Quotes { get; set; }
+        public virtual ICollection<SamuraiBattles> SamuraiBattles { get; set; }
+
     }
 
     public enum HairStyles

@@ -11,6 +11,7 @@ namespace EFSamurai.Domain
         public bool Brutal { get; set; }
         public DateTime StartDate { get; set; }
         public DateTime EndDate { get; set; }
+        public virtual ICollection<SamuraiBattles> SamuraiBattles { get; set; }
 
     }
 }
