@@ -9,9 +9,15 @@ namespace EFSamurai.Domain
         public int Id { get; set; }
         public string Name { get; set; }
         public string Sword { get; set; }
+        public HairStyles HairStyle { get; set; }
 
         public virtual ICollection<Quote> Quotes { get; set; }
+    }
 
-
+    public enum HairStyles
+    {
+        Chonmage,
+        Oicho,
+        Western
     }
 }
