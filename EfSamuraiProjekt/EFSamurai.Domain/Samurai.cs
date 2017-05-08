@@ -10,6 +10,7 @@ namespace EFSamurai.Domain
         public string Name { get; set; }
         public string Sword { get; set; }
         public HairStyles HairStyle { get; set; }
+        public SecretIdentity SecretIdentity { get; set; }
 
         public virtual ICollection<Quote> Quotes { get; set; }
     }

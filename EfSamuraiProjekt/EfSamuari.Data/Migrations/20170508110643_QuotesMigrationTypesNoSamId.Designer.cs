@@ -9,9 +9,10 @@ using EFSamurai.Domain;
 namespace EfSamuari.Data.Migrations
 {
     [DbContext(typeof(SamuraiContext))]
-    partial class SamuraiContextModelSnapshot : ModelSnapshot
+    [Migration("20170508110643_QuotesMigrationTypesNoSamId")]
+    partial class QuotesMigrationTypesNoSamId
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
             modelBuilder
                 .HasAnnotation("ProductVersion", "1.1.1")
@@ -53,36 +54,11 @@ namespace EfSamuari.Data.Migrations
                     b.ToTable("Samurais");
                 });
 
-            modelBuilder.Entity("EFSamurai.Domain.SecretIdentity", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd();
-
-                    b.Property<string>("RealName");
-
-                    b.Property<int>("SamuraiId");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("SamuraiId")
-                        .IsUnique();
-
-                    b.ToTable("SecretIdentity");
-                });
-
             modelBuilder.Entity("EFSamurai.Domain.Quote", b =>
                 {
                     b.HasOne("EFSamurai.Domain.Samurai", "Samurai")
                         .WithMany("Quotes")
                         .HasForeignKey("SamuraiId");
-                });
-
-            modelBuilder.Entity("EFSamurai.Domain.SecretIdentity", b =>
-                {
-                    b.HasOne("EFSamurai.Domain.Samurai")
-                        .WithOne("SecretIdentity")
-                        .HasForeignKey("EFSamurai.Domain.SecretIdentity", "SamuraiId")
-                        .OnDelete(DeleteBehavior.Cascade);
                 });
         }
     }
