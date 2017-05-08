@@ -10,7 +10,6 @@ namespace EFSamurai.Data
     {
         public DbSet<Samurai> Samurais { get; set; }
 
-
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
             optionsBuilder.UseSqlServer(
