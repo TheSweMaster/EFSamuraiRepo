@@ -12,6 +12,5 @@ namespace EFSamurai.Domain
         public Battle Battles { get; set; }
         public ICollection<BattleEvent> BattleEvents { get; set; }
 
-
     }
 }

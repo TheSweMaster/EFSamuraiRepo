@@ -9,5 +9,9 @@ namespace EFSamurai.Domain
         public int Id { get; set; }
         public int BattleLogId { get; set; }
         public BattleLog BattleLogs { get; set; }
+        public string Conclusion { get; set; }
+        public string Description { get; set; }
+        public DateTime BattleEventDate { get; set; }
+
     }
 }
