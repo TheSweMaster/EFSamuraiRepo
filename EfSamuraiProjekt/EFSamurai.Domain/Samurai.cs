@@ -10,6 +10,8 @@ namespace EFSamurai.Domain
         public string Name { get; set; }
         public string Sword { get; set; }
 
+        public virtual ICollection<Quote> Quotes { get; set; }
+
 
     }
 }
