@@ -24,24 +24,31 @@ namespace EFSamurai.ConsoleApp
             List<Samurai> listOfSamuraisByIdDesc = ListAllSamuraiNames_OrderByIdDescending();
 
             PrintAllSamurais(listOfSamurais);
-            Console.WriteLine("------------");
-            PrintAllSamurais(listOfSamuraisByName);
-            Console.WriteLine("------------");
-            PrintAllSamurais(listOfSamuraisByIdDesc);
-            Console.WriteLine("------------");
+            Console.WriteLine();
 
-            Console.WriteLine("Insert a real name of a Samurai.");
+            Console.WriteLine("Order By Name.");
+            PrintAllSamurais(listOfSamuraisByName);
+            Console.WriteLine();
+
+            Console.WriteLine("Order By Id Descending.");
+            PrintAllSamurais(listOfSamuraisByIdDesc);
+            Console.WriteLine();
+
+            Console.WriteLine("Finding Samurai with a Real Name.");
+            Console.Write("Insert a real name of a Samurai: ");
             var name = Console.ReadLine();
             bool anySamurai = FindSamuraiWithRealName(name);
             RespondSamuraiWithRealName(anySamurai, name);
             Console.WriteLine();
 
-            var quoteType = QuoteTypes.Awesome;
+            Console.WriteLine("Print all quotes of a specific type.");
+            var quoteType = QuoteTypes.Lame;
             List<Quote> listOfQuoteTypes = ListAllQuotesOfType(quoteType);
             PrintAllQuotes(listOfQuoteTypes);
             Console.WriteLine();
 
-            var quoteType2 = QuoteTypes.Awesome;
+            Console.WriteLine("Print all quotes of a specific type with Samurai name.");
+            var quoteType2 = QuoteTypes.Cheesy;
             List<Quote> listOfQuoteTypesWithSamurai = ListAllQuotesOfType_WithSamurai(quoteType2);
             PrintAllQuotesWithSamurai(listOfQuoteTypesWithSamurai);
             Console.WriteLine();
@@ -65,6 +72,10 @@ namespace EFSamurai.ConsoleApp
                     {
                         item.Samurai = samurai;
                     }
+                    else
+                    {
+                        Console.WriteLine($"Could not find any Samurais with quote type, {quoteType2.ToString()}.");
+                    }
                 }
                 return quoteList;
             }
@@ -86,11 +97,13 @@ namespace EFSamurai.ConsoleApp
             {
                 Console.WriteLine($"Quote Type: {quote.QuoteType.ToString()}");
                 Console.WriteLine($"Quote Text: {quote.Text}");
+                Console.WriteLine($"Quote Length: {quote.QuateLength}");
             }
         }
 
         private static List<Quote> ListAllQuotesOfType(QuoteTypes quoteType)
         {
+
             using (var repo = new SamuraiContext())
             {
                 var list = repo.Quotes.Where(x => x.QuoteType == quoteType).ToList();
@@ -139,6 +152,7 @@ namespace EFSamurai.ConsoleApp
 
         private static void PrintAllSamurais(List<Samurai> listOfSamurais)
         {
+            Console.WriteLine("-- Print all Samurais --");
             foreach (var sam in listOfSamurais)
             {
                 Console.WriteLine($"Id: {sam.Id} Name: {sam.Name}");
@@ -181,7 +195,6 @@ namespace EFSamurai.ConsoleApp
 
                 repo.SaveChanges();
             }
-
             Console.WriteLine("Cleared the database.");
         }
 
@@ -194,13 +207,13 @@ namespace EFSamurai.ConsoleApp
                 new Quote { QuoteType = QuoteTypes.Awesome, Text = "Like shooting fishes in a barrel.", Samurai = sam }
             };
             var secret = new SecretIdentity { RealName = "Hönan", Samurai = sam };
-            var battle = new Battle { Name = "Overwatch battle", Brutal = false, StartDate = DateTime.Today, EndDate = DateTime.Now };
+            var battle = new Battle { Name = "Overwatch battle", Brutal = false, StartDate = DateTime.Today, EndDate = DateTime.Now.AddDays(30) };
             var samuraiBattles = new SamuraiBattles { Battles = battle, Samurais = sam };
             var battleLog = new BattleLog { Name = "Battle Of Overwatch", Battles = battle };
             var battleEvents = new List<BattleEvent>()
             {
-                new BattleEvent { Conclusion = "Overwatch saved the world.", Description = "Almost all robots died.", BattleEventDate = DateTime.Now, BattleLogs = battleLog },
-                new BattleEvent { Conclusion = "Overwatch saved the world.", Description = "The humans survived.", BattleEventDate = DateTime.Now, BattleLogs = battleLog }
+                new BattleEvent { Conclusion = "Overwatch saved the world.", Description = "Almost all robots died.", BattleEventDate = DateTime.Today.AddDays(10), BattleLogs = battleLog },
+                new BattleEvent { Conclusion = "Overwatch saved the world.", Description = "The humans survived.", BattleEventDate = DateTime.Today.AddDays(10), BattleLogs = battleLog }
             };
 
             using (var repo = new SamuraiContext())
@@ -214,7 +227,6 @@ namespace EFSamurai.ConsoleApp
                 repo.BattleEvents.AddRange(battleEvents);
                 repo.SaveChanges();
             }
-
             Console.WriteLine("Added a Samurai with lot's of data.");
         }
 

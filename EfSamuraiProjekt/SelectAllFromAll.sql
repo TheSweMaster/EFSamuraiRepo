@@ -1,8 +1,8 @@
-﻿select * From Samurais
-select * From Quotes
-select * from SecretIdentities
-select * from Battles
-select * from SamuraiBattles
-select * from BattleLogs
-select * from BattleEvents
+﻿SELECT * FROM Samurais
+SELECT * FROM Quotes
+SELECT * FROM SecretIdentities
+SELECT * FROM Battles
+SELECT * FROM SamuraiBattles
+SELECT * FROM BattleLogs
+SELECT * FROM BattleEvents
 GO
