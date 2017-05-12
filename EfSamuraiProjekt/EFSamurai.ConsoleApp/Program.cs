@@ -19,43 +19,192 @@ namespace EFSamurai.ConsoleApp
             //AddSomeSamurais();
             //AddOneSamuraiWithRelatedData();
             //ClearDatabase();
-            List<Samurai> listOfSamurais = ListAllSamuraiNames();
-            List<Samurai> listOfSamuraisByName = ListAllSamuraiNames_OrderByName();
-            List<Samurai> listOfSamuraisByIdDesc = ListAllSamuraiNames_OrderByIdDescending();
+            //List<Samurai> listOfSamurais = ListAllSamuraiNames();
+            //List<Samurai> listOfSamuraisByName = ListAllSamuraiNames_OrderByName();
+            //List<Samurai> listOfSamuraisByIdDesc = ListAllSamuraiNames_OrderByIdDescending();
 
-            PrintAllSamurais(listOfSamurais);
-            Console.WriteLine();
+            //PrintAllSamurais(listOfSamurais);
+            //Console.WriteLine();
 
-            Console.WriteLine("Order By Name.");
-            PrintAllSamurais(listOfSamuraisByName);
-            Console.WriteLine();
+            //Console.WriteLine("Order By Name.");
+            //PrintAllSamurais(listOfSamuraisByName);
+            //Console.WriteLine();
 
-            Console.WriteLine("Order By Id Descending.");
-            PrintAllSamurais(listOfSamuraisByIdDesc);
-            Console.WriteLine();
+            //Console.WriteLine("Order By Id Descending.");
+            //PrintAllSamurais(listOfSamuraisByIdDesc);
+            //Console.WriteLine();
 
-            Console.WriteLine("Finding Samurai with a Real Name.");
-            Console.Write("Insert a real name of a Samurai: ");
-            var name = Console.ReadLine();
-            bool anySamurai = FindSamuraiWithRealName(name);
-            RespondSamuraiWithRealName(anySamurai, name);
-            Console.WriteLine();
+            //Console.WriteLine("Finding Samurai with a Real Name.");
+            //Console.Write("Insert a real name of a Samurai: ");
+            //var name = Console.ReadLine();
+            //bool anySamurai = FindSamuraiWithRealName(name);
+            //RespondSamuraiWithRealName(anySamurai, name);
+            //Console.WriteLine();
 
-            Console.WriteLine("Print all quotes of a specific type.");
-            var quoteType = QuoteTypes.Lame;
-            List<Quote> listOfQuoteTypes = ListAllQuotesOfType(quoteType);
-            PrintAllQuotes(listOfQuoteTypes);
-            Console.WriteLine();
+            //Console.WriteLine("Print all quotes of a specific type.");
+            //var quoteType = QuoteTypes.Lame;
+            //List<Quote> listOfQuoteTypes = ListAllQuotesOfType(quoteType);
+            //PrintAllQuotes(listOfQuoteTypes);
+            //Console.WriteLine();
 
-            Console.WriteLine("Print all quotes of a specific type with Samurai name.");
-            var quoteType2 = QuoteTypes.Cheesy;
-            List<Quote> listOfQuoteTypesWithSamurai = ListAllQuotesOfType_WithSamurai(quoteType2);
-            PrintAllQuotesWithSamurai(listOfQuoteTypesWithSamurai);
+            //Console.WriteLine("Print all quotes of a specific type with Samurai name.");
+            //var quoteType2 = QuoteTypes.Cheesy;
+            //List<Quote> listOfQuoteTypesWithSamurai = ListAllQuotesOfType_WithSamurai(quoteType2);
+            //PrintAllQuotesWithSamurai(listOfQuoteTypesWithSamurai);
+            //Console.WriteLine();
+
+            //Console.WriteLine("Print all Samurai Names with Alias.");
+            //List<string> listNamesWithAlias = AllSamuariNameWithAlias();
+            //PrintListWithNamesAlias(listNamesWithAlias);
+            //Console.WriteLine();
+
+            //DateTime from = DateTime.MinValue;
+            //DateTime to = DateTime.MaxValue;
+            //bool isBrutal = true;
+
+            //PrintAndListAllBattles_WithLog(from, to, isBrutal);
+            ////List<string> listAllBattlesWithLog = ListAllBattles_WithLog(from, to, isBrutal);
+            ////PrintAllBattlesWithLog(listAllBattlesWithLog);
+            //Console.WriteLine();
+
+            Console.WriteLine("Print list of Samurai Info");
+            List<SamuraiInfo> listSamuraiInfo = GetSamuraiInfo();
+            PrintListOfSamuraiInfo(listSamuraiInfo);
             Console.WriteLine();
 
             Console.WriteLine();
             Console.WriteLine("Press any key to Quit. . .");
             Console.ReadLine();
+        }
+
+        private static void PrintListOfSamuraiInfo(List<SamuraiInfo> listSamuraiInfo)
+        {
+            Console.WriteLine("Name          RealName        Battle");
+            Console.WriteLine("------------------------------------");
+            foreach (var samInfo in listSamuraiInfo)
+            {
+                Console.WriteLine($"Name: {samInfo.Name} RealName: {samInfo.RealName}");
+            }
+        }
+
+        private static List<SamuraiInfo> GetSamuraiInfo()
+        {
+            using (var repo = new SamuraiContext())
+            {
+                var samuraiInfoList = new List<SamuraiInfo>();
+                
+                var listSamurais = repo.Samurais.Select(x => x).ToList();
+                var listSamuraisAlias = repo.Samurais.Select(s => s.SecretIdentity).ToList();
+                var listSamuraisBattles = repo.Samurais.SelectMany(s => s.SamuraiBattles).ToList();
+
+
+                //var testing = repo.Samurais.Select(s => $"Samurai with Name: {s.Name} and Alias: {s.SecretIdentity.RealName}"
+                //    + $"{s.SamuraiBattles.Select(x => x.Battles.Name)}").ToList();
+
+
+                foreach (var sam in listSamurais)
+                {
+                    if (sam != null)
+                    {
+                        var samuraiInfo = new SamuraiInfo();
+                        samuraiInfo.Name = sam.Name;
+                        //samuraiInfo.RealName = sam.SecretIdentity.RealName;
+                        samuraiInfoList.Add(samuraiInfo);
+                    }
+                }
+
+                return samuraiInfoList;
+            }
+        }
+
+        //foreach (var sam in listSamurais)
+        //{
+        //    if (sam != null)
+        //    {
+        //        samuraiInfo.Name = sam.Name;
+        //        foreach (var samAlias in listSamuraisAlias)
+        //        {
+        //            if (samAlias != null)
+        //            {
+        //                samuraiInfo.RealName = samAlias.RealName;
+        //            }
+        //        }
+        //    }
+        //}
+
+        private static void PrintAllBattlesWithLog(List<string> listAllBattlesWithLog)
+        {
+            foreach (var battle in listAllBattlesWithLog)
+            {
+                Console.WriteLine("--- Battle ---");
+                Console.WriteLine(battle);
+                Console.WriteLine("--------------");
+            }
+        }
+
+        private static void PrintAndListAllBattles_WithLog(DateTime from, DateTime to, bool isBrutal)
+        {
+            using (var repo = new SamuraiContext())
+            {
+                var listbattles = repo.Battles.Where(x => x.Brutal == true).Where(x => x.StartDate >= from).Where(z => z.EndDate <= to).ToList();
+                var listbBattleLogs = repo.Battles.Select(b => b.BattleLogs).ToList();
+                var listBattleLogId = repo.Battles.Select(b => b.BattleLogs.Id).ToList();
+
+                //var listBattleEventsx = repo.BattleEvents.Select(b => b).OrderBy(b => b.BattleEventDate).ToList();
+                //List<BattleEvent> listBattleEvents = new List<BattleEvent>();
+                //foreach (var battleLog in listbBattleLogs)
+                //{
+                //    listBattleEvents = repo.BattleEvents.Where(x => x.BattleLogId == battleLog.Id).OrderBy(b => b.BattleEventDate).ToList();
+                //}
+
+                Console.WriteLine("------ ListAllBattles WithLog ------");
+                foreach (var battle in listbattles)
+                {
+                    Console.WriteLine($"Battle Name: {battle.Name}");
+                    foreach (var battleLog in listbBattleLogs)
+                    {
+                        List<BattleEvent> listBattleEvents = new List<BattleEvent>();
+                        listBattleEvents = repo.BattleEvents.Where(x => x.BattleLogId == battleLog.Id).OrderBy(b => b.BattleEventDate).ToList();
+                        if (battle.Id == battleLog.BattleId)
+                        {
+                            Console.WriteLine($"Battle Log Name: {battleLog.Name}");
+                        }
+                        foreach (var battleEvent in listBattleEvents)
+                        {
+                            if (battleLog.Id == battleEvent.BattleLogId)
+                            {
+                                Console.WriteLine($"Battle Event: {battleEvent.Conclusion} Date: {battleEvent.BattleEventDate}");
+                            }
+                            else
+                            {
+                                continue;
+                            }
+                        }
+                    }
+                    Console.WriteLine("------------");
+                }
+
+                //var result = repo.Battles.
+                //    Select(b => $"Name: {b.Name} Battlelog: {b.BattleLogs.Name} " +
+                //    b.BattleLogs.BattleEvents.SelectMany(e => $"Conclusion {e.Conclusion}")).ToList(); //kanske select many
+                //return null;
+            }
+        }
+
+        private static void PrintListWithNamesAlias(List<string> listNamesWithAlias)
+        {
+            foreach (var nameWithAlias in listNamesWithAlias)
+            {
+                Console.WriteLine(nameWithAlias);
+            }
+        }
+
+        private static List<string> AllSamuariNameWithAlias()
+        {
+            using (var repo = new SamuraiContext())
+            {
+                return repo.Samurais.Select(s => $"Samurai with Name: {s.Name} and Alias: {s.SecretIdentity.RealName}").ToList();
+            }
         }
 
         private static List<Quote> ListAllQuotesOfType_WithSamurai(QuoteTypes quoteType2)
