@@ -22,4 +22,5 @@ namespace EFSamurai.Domain
         Oicho,
         Western
     }
+
 }

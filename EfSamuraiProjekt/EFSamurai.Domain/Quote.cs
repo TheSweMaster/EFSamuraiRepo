@@ -21,4 +21,5 @@ namespace EFSamurai.Domain
         Cheesy,
         Awesome
     }
+
 }
